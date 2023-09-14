@@ -1,0 +1,50 @@
+{
+  "name": "@doodles/floo",
+  "version": "0.0.4",
+  "description": "Floo wraps the Flow Client Library (FCL), providing better TypeScript typings and convenient helpers for easier integration.",
+  "license": "MIT",
+  "author": "Doodles",
+  "type": "commonjs",
+  "keywords": [
+    "flow",
+    "fcl"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Doodles/floo"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "lint": "eslint src test",
+    "prettier": "prettier src test --check",
+    "test": "jest",
+    "clean:build": "rm -rf ./dist",
+    "prebuild": "npm run lint && npm run prettier && npm run test && npm run clean:build",
+    "build": "tsc --project tsconfig.build.json",
+    "prepublishOnly": "npm run build",
+    "publish": "npm publish"
+  },
+  "devDependencies": {
+    "@nx/eslint-plugin": "16.5.3",
+    "@onflow/types": "^1.1.0",
+    "@trivago/prettier-plugin-sort-imports": "^4.2.0",
+    "@types/jest": "^29.5.4",
+    "@typescript-eslint/eslint-plugin": "5.61.0",
+    "@typescript-eslint/parser": "5.61.0",
+    "eslint": "^8.49.0",
+    "eslint-config-prettier": "^8.8.0",
+    "jest": "^29.7.0",
+    "prettier": "^3.0.0",
+    "ts-jest": "^29.1.1"
+  },
+  "dependencies": {
+    "@onflow/fcl": "^1.6.0",
+    "@onflow/flow-cadut": "^0.2.0-alpha.9",
+    "@onflow/typedefs": "^1.1.1",
+    "bignumber.js": "^9.1.2"
+  }
+}
