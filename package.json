@@ -26,7 +26,11 @@
     "prebuild": "npm run lint && npm run prettier && npm run test && npm run clean:build",
     "build": "tsc --project tsconfig.build.json",
     "prepublishOnly": "npm run build",
-    "publish": "npm publish"
+    "preversion": "git checkout main && git pull && npm install && npm run build",
+    "release:major": "npm version major",
+    "release:minor": "npm version minor",
+    "release:patch": "npm version patch",
+    "postversion": "npm publish"
   },
   "devDependencies": {
     "@nx/eslint-plugin": "16.5.3",
