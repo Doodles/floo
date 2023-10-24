@@ -1,6 +1,9 @@
 import * as fcl from '@onflow/fcl';
 
 import {
+  AuthorizationsAuthzKey,
+  PayerAuthzKey,
+  ProposerAuthzKey,
   TransactionSubscriber,
   formatFlowAddress,
   generateAuthorizationFunction,
@@ -39,7 +42,7 @@ export interface SendFlowTransactionPrivateKeyProps {
 export const sendFlowTransaction = async (
   options: SendFlowTransactionProps,
 ): Promise<TransactionSubscriber> => {
-  const parsedAuth = parseAuth(options);
+  const parsedAuth = await parseAuth(options);
 
   const transactionId = await fcl.mutate({
     cadence: options.code,
@@ -53,7 +56,7 @@ export const sendFlowTransaction = async (
   return new TransactionSubscriber(transactionId);
 };
 
-const parseAuth = ({ auth }: SendFlowTransactionProps) => {
+const parseAuth = async ({ auth }: SendFlowTransactionProps) => {
   if (!auth) {
     return {
       payer: fcl.authz,
@@ -74,10 +77,20 @@ const parseAuth = ({ auth }: SendFlowTransactionProps) => {
       authorizations: [authorizationFunction],
     };
   } else {
+    let { payer, proposer, authorizations } = auth;
+    if (!payer) {
+      payer = await fcl.config().get(PayerAuthzKey);
+    }
+    if (!proposer) {
+      proposer = await fcl.config().get(ProposerAuthzKey);
+    }
+    if (!authorizations) {
+      authorizations = await fcl.config().get(AuthorizationsAuthzKey);
+    }
     return {
-      payer: auth.payer ?? fcl.authz,
-      proposer: auth.proposer ?? fcl.authz,
-      authorizations: auth.authorizations ?? [fcl.authz],
+      payer: payer ?? fcl.authz,
+      proposer: proposer ?? fcl.authz,
+      authorizations: authorizations ?? [fcl.authz],
     };
   }
 };

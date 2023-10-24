@@ -6,4 +6,5 @@ export * from './parseFlowArgs';
 export * from './parseFlowEventName';
 export * from './parseFlowTransactionError';
 export * from './resolveMetadataViewsFile';
+export * from './setAuthz';
 export * from './transactionSubscriber';
