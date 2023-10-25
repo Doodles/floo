@@ -44,7 +44,10 @@ export const sendFlowTransaction = async (
 ): Promise<TransactionSubscriber> => {
   const parsedAuth = await parseAuth(options);
 
-  const transactionId = await fcl.mutate({
+  // Temporal workaround until missing types are added.
+  // See https://github.com/onflow/fcl-js/issues/1715
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const transactionId = await (fcl as any).mutate({
     cadence: options.code,
     limit: options.limit,
     payer: parsedAuth.payer,
