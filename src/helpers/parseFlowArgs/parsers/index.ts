@@ -5,6 +5,6 @@ export * from './flowTypeDictionaryParser';
 export * from './flowTypeFixParsers';
 export * from './flowTypeIntParsers';
 export * from './flowTypeOptionalParser';
-export * from './flowTypePathParsers';
+export * from './flowTypePathParser';
 export * from './flowTypeStringParsers';
 export * from './flowTypeWordsParsers';

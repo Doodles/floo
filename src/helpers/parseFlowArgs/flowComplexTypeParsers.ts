@@ -6,6 +6,7 @@ import {
   getFlowTypeArrayParser,
   getFlowTypeDictionaryParser,
   getFlowTypeOptionalParser,
+  getFlowTypePathParser,
 } from './parsers';
 
 export const getFlowComplexTypeParser = (key: string): FlowTypeParser => {
@@ -25,11 +26,20 @@ export const getFlowComplexTypeParser = (key: string): FlowTypeParser => {
     const flowTypeParser: FlowTypeParser = getFlowTypeParser(type);
     return getFlowTypeOptionalParser(flowTypeParser);
   }
+  if (isFlowPath(key)) {
+    return getFlowTypePathParser() as FlowTypeParser;
+  }
+
   throw new Error(`Type ${key} is not supported as complex type.`);
 };
 
 export const isComplexType = (key: string): boolean => {
-  return isFlowArray(key) || isFlowDictionary(key) || isFlowOptional(key);
+  return (
+    isFlowArray(key) ||
+    isFlowDictionary(key) ||
+    isFlowOptional(key) ||
+    isFlowPath(key)
+  );
 };
 
 export const isFlowArray = (key: string): boolean =>
@@ -39,3 +49,6 @@ export const isFlowDictionary = (key: string): boolean =>
   key.startsWith('{') && key.endsWith('}');
 
 export const isFlowOptional = (key: string): boolean => key.endsWith('?');
+
+export const isFlowPath = (key: string): boolean =>
+  ['PublicPath', 'PrivatePath', 'StoragePath'].includes(key);
