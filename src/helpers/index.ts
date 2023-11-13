@@ -2,6 +2,7 @@ export * from './castFlowResult';
 export * from './configureChains';
 export * from './formatFlowAddress';
 export * from './generateAuthorizationFunction';
+export * from './getDefaultAuthz';
 export * from './parseFlowArgs';
 export * from './parseFlowEventName';
 export * from './parseFlowTransactionError';
