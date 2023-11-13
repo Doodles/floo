@@ -1,10 +1,10 @@
 import * as fcl from '@onflow/fcl';
 
+import { Authz } from '../interfaces';
+
 export const PayerAuthzKey = 'floo_payer_authz';
 export const ProposerAuthzKey = 'floo_proposer_authz';
 export const AuthorizationsAuthzKey = 'floo_authorizations_authz';
-
-type Authz = (account: unknown) => Promise<unknown>;
 
 interface SetAuthzOptions {
   payer?: Authz;

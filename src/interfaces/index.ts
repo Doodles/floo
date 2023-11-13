@@ -1,3 +1,4 @@
+export * from './authz.interface';
 export * from './flowAccount.interface';
 export * from './flowAuthorizationFunction.interface';
 export * from './flowEvent.interface';
