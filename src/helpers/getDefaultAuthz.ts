@@ -2,4 +2,4 @@ import * as fcl from '@onflow/fcl';
 
 import { Authz } from '../interfaces';
 
-export const getDefaultAuthz = (): Authz => fcl.authz;
+export const getDefaultAuthz = async (): Promise<Authz> => await fcl.authz;
