@@ -1,4 +1,5 @@
 import * as fcl from '@onflow/fcl';
+import { TransactionStatus } from '@onflow/fcl/types/transaction';
 
 import { FlowEvent, FlowTransactionError } from '../interfaces';
 import { parseFlowTransactionError } from './parseFlowTransactionError';
@@ -27,15 +28,6 @@ export type FlowTransactionStatus =
   | FlowTransactionStatusSealed
   | FlowTransactionStatusError;
 
-export interface IFclTransactionStatus {
-  blockId: string;
-  errorMessage: string;
-  status: number;
-  statusCode: number;
-  statusString: string;
-  events: FlowEvent[];
-}
-
 export interface TransactionSealedResult {
   transactionId: string;
   blockId: string;
@@ -62,7 +54,7 @@ export class TransactionSubscriber {
   ): () => void {
     const unsubscribe = fcl
       .tx(this.transactionId)
-      .subscribe((fclTransactionStatus: IFclTransactionStatus) => {
+      .subscribe((transactionStatus: TransactionStatus) => {
         if (this.finished) {
           return;
         }
@@ -72,22 +64,22 @@ export class TransactionSubscriber {
             status: 'pending',
             transactionId: this.transactionId,
           });
-        } else if (fclTransactionStatus.errorMessage !== '') {
+        } else if (transactionStatus.errorMessage !== '') {
           this.finished = true;
           cb({
             status: 'error',
             transactionId: this.transactionId,
-            blockId: fclTransactionStatus.blockId,
-            error: parseFlowTransactionError(fclTransactionStatus.errorMessage),
+            blockId: transactionStatus.blockId,
+            error: parseFlowTransactionError(transactionStatus.errorMessage),
           });
           unsubscribe();
-        } else if (fclTransactionStatus.statusString === 'SEALED') {
+        } else if (transactionStatus.statusString === 'SEALED') {
           this.finished = true;
           cb({
             status: 'sealed',
             transactionId: this.transactionId,
-            blockId: fclTransactionStatus.blockId,
-            events: fclTransactionStatus.events,
+            blockId: transactionStatus.blockId,
+            events: transactionStatus.events,
           });
           unsubscribe();
         }
