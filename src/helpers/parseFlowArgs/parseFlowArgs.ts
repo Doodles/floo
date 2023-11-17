@@ -18,6 +18,7 @@ export const parseFlowArgs = ({ code, args = [] }: ParseFlowArgsProps) => {
     );
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   return (arg: (value: FlowType, type: unknown) => unknown, _: unknown) =>
     templateArgs.map((templateArg: unknown, index: number) => {
       const [templateArgName, templateArgType] = splitArgs(templateArg);
