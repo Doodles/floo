@@ -10,7 +10,7 @@ import {
   parseFlowArgs,
 } from '../helpers';
 import { AuthorizationFunction, FlowType } from '../interfaces';
-import { XOR } from '../types';
+import { XOR } from '../types/internal';
 
 export type SendFlowTransactionProps = XOR<
   SendFlowTransactionAuthorizationsProps,
