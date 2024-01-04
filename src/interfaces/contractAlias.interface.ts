@@ -1,8 +1,8 @@
 import { FlowNetwork, ZeroXString } from '../types';
 
 export type ContractAlias = {
-  alias: ZeroXString;
-  addresses: {
-    [K in FlowNetwork]?: ZeroXString;
+  readonly alias: ZeroXString;
+  readonly addresses: {
+    readonly [K in FlowNetwork]?: ZeroXString;
   };
 };
