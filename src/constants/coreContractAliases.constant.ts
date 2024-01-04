@@ -8,7 +8,7 @@ interface CoreContractAlias extends Omit<ContractAlias, 'addresses'> {
   addresses: MakeRequired<ContractAlias['addresses'], CoreContractNetwork>;
 }
 
-export const coreContractAliases: CoreContractAlias[] = [
+export const coreContractAliases: ReadonlyArray<CoreContractAlias> = [
   {
     alias: '0xFlowToken',
     addresses: {
