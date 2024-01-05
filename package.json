@@ -1,6 +1,6 @@
 {
   "name": "@doodlesteam/floo",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "description": "Floo wraps the Flow Client Library (FCL), providing better TypeScript typings and convenient helpers for easier integration.",
   "license": "MIT",
   "author": "Doodles",
