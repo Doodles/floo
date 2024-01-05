@@ -7,7 +7,6 @@ import {
   getFlowTypeBoolParsers,
   getFlowTypeFixParsers,
   getFlowTypeIntParsers,
-  getFlowTypePathParsers,
   getFlowTypeStringParsers,
   getFlowTypeWordParsers,
 } from './parsers';
@@ -29,7 +28,6 @@ const _getCachedFlowPrimitiveTypeParsers = (): FlowPrimitiveTypeParserMap => {
       ...getFlowTypeBoolParsers(),
       ...getFlowTypeFixParsers(),
       ...getFlowTypeIntParsers(),
-      ...getFlowTypePathParsers(),
       ...getFlowTypeStringParsers(),
       ...getFlowTypeWordParsers(),
     };

@@ -27,7 +27,7 @@ export const generateAuthorizationFunction = ({
   }
 
   return async (account: any) => {
-    const user = await getAccount(address);
+    const user = await fcl.account(address);
     const key = user.keys[keyIndex];
     if (!key) {
       throw new Error(
@@ -62,11 +62,6 @@ export const generateAuthorizationFunction = ({
       roles: account.roles,
     };
   };
-};
-
-const getAccount = async (addr: string) => {
-  const { account } = await fcl.send([fcl.getAccount(addr)]);
-  return account;
 };
 
 const signWithKey = (privateKey: string, message: string) => {

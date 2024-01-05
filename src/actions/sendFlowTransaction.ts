@@ -1,13 +1,16 @@
 import * as fcl from '@onflow/fcl';
 
 import {
+  AuthorizationsAuthzKey,
+  PayerAuthzKey,
+  ProposerAuthzKey,
   TransactionSubscriber,
   formatFlowAddress,
   generateAuthorizationFunction,
   parseFlowArgs,
 } from '../helpers';
 import { AuthorizationFunction, FlowType } from '../interfaces';
-import { XOR } from '../types';
+import { XOR } from '../types/internal';
 
 export type SendFlowTransactionProps = XOR<
   SendFlowTransactionAuthorizationsProps,
@@ -39,9 +42,12 @@ export interface SendFlowTransactionPrivateKeyProps {
 export const sendFlowTransaction = async (
   options: SendFlowTransactionProps,
 ): Promise<TransactionSubscriber> => {
-  const parsedAuth = parseAuth(options);
+  const parsedAuth = await parseAuth(options);
 
-  const transactionId = await fcl.mutate({
+  // Temporal workaround until missing types are added.
+  // See https://github.com/onflow/fcl-js/issues/1715
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const transactionId = await (fcl as any).mutate({
     cadence: options.code,
     limit: options.limit,
     payer: parsedAuth.payer,
@@ -53,7 +59,7 @@ export const sendFlowTransaction = async (
   return new TransactionSubscriber(transactionId);
 };
 
-const parseAuth = ({ auth }: SendFlowTransactionProps) => {
+const parseAuth = async ({ auth }: SendFlowTransactionProps) => {
   if (!auth) {
     return {
       payer: fcl.authz,
@@ -74,10 +80,20 @@ const parseAuth = ({ auth }: SendFlowTransactionProps) => {
       authorizations: [authorizationFunction],
     };
   } else {
+    let { payer, proposer, authorizations } = auth;
+    if (!payer) {
+      payer = await fcl.config().get(PayerAuthzKey);
+    }
+    if (!proposer) {
+      proposer = await fcl.config().get(ProposerAuthzKey);
+    }
+    if (!authorizations) {
+      authorizations = await fcl.config().get(AuthorizationsAuthzKey);
+    }
     return {
-      payer: auth.payer ?? fcl.authz,
-      proposer: auth.proposer ?? fcl.authz,
-      authorizations: auth.authorizations ?? [fcl.authz],
+      payer: payer ?? fcl.authz,
+      proposer: proposer ?? fcl.authz,
+      authorizations: authorizations ?? [fcl.authz],
     };
   }
 };
